@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import { EXPERIENCES } from '../data/experiences.js';
+---
+<Base title="Things to Do in Fairbanks — Aurora Season Activities & Tours | Alaska Dream Vacation" description="Dog sledding, Chena Hot Springs, aurora photo tours, reindeer walks, and more. Curated Fairbanks experiences we can book for your stay.">
+  <section class="block wrap" style="padding-top:48px;padding-bottom:24px">
+    <span class="eyebrow">Experiences</span>
+    <h1 style="font-size:clamp(30px,5vw,52px);margin:16px 0 14px;max-width:22ch">Fill your days between the lights.</h1>
+    <p style="color:var(--muted);font-size:18px;max-width:60ch">The aurora comes out at night — so we line up the best of Fairbanks by day. Tell us what you like and we'll book it straight to your stay. One message, sorted.</p>
+  </section>
+
+  <section class="block wrap" style="padding-top:0">
+    <div class="grid">
+      {EXPERIENCES.map((e) => (
+        <div class="card">
+          <div class={`ph scene ${e.scene}`} style="height:170px"><span class="tag">{e.icon} {e.tags[0]}</span></div>
+          <div class="body">
+            <div class="row"><h3>{e.name}</h3></div>
+            <div class="amen" style="margin-top:8px">{e.tags.map((t)=>(<span>{t}</span>))}</div>
+            <p style="font-size:14px;color:var(--muted);margin-bottom:6px">{e.blurb}</p>
+            <div class="meta">
+              <span class="from">from <b>${e.from}</b> {e.unit}</span>
+              <a class="mini-btn" href="/about">Add to my trip</a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="cta-band" style="margin-top:48px"><div class="bg"></div>
+      <h2>Want us to plan the whole trip?</h2>
+      <p>Book a home and tell us your dates — we'll suggest a day-by-day plan around the aurora forecast and reserve your activities.</p>
+      <a class="btn btn-primary" href="/#homes">Start with a home</a>
+    </div>
+  </section>
+</Base>
