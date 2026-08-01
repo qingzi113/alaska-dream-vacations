@@ -1,0 +1,87 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getListings } from '../../lib/hostaway.js';
+
+export async function getStaticPaths() {
+  const listings = await getListings();
+  return listings.map((c) => ({ params: { slug: c.slug }, props: { home: c } }));
+}
+const { home } = Astro.props;
+const bookUrl = home.book || 'https://alaskadreamvacation.holidayfuture.com/';
+const gallery = home.photos && home.photos.length ? home.photos.slice(0, 5) : [];
+// Airbnb / VRBO links — use the listing's real channel URL if we have it, else a search link.
+const q = encodeURIComponent(`${home.name} ${home.location}`);
+const airbnbUrl = home.airbnb || `https://www.airbnb.com/s/${q}/homes`;
+const vrboUrl = home.vrbo || `https://www.vrbo.com/search?q=${q}`;
+---
+<Base title={`${home.name} — Aurora Home near Fairbanks | Alaska Dream Vacation`} description={home.description.slice(0, 155)}>
+  <section class="wrap" style="padding-top:32px">
+    <a href="/#homes" style="color:var(--muted);font-size:14px">← Back to all homes</a>
+    <h1 style="font-size:clamp(28px,4vw,40px);margin:14px 0 6px">{home.name}</h1>
+    <div style="color:var(--muted);margin-bottom:20px">
+      {home.rating && <>★ {home.rating} · </>}{home.location} · Sleeps {home.guests} · {home.bedrooms} bedrooms{home.baths ? ` · ${home.baths} baths` : ''}
+    </div>
+
+    <div class="gallery">
+      {gallery.length >= 5 ? (
+        <>
+          <div class="big" style={`background-image:url(${gallery[0]})`}></div>
+          <div style={`background-image:url(${gallery[1]})`}></div>
+          <div style={`background-image:url(${gallery[2]})`}></div>
+          <div style={`background-image:url(${gallery[3]})`}></div>
+          <div style={`background-image:url(${gallery[4]})`}></div>
+        </>
+      ) : (
+        <>
+          <div class={`big scene ${home.scene}`}><div class="stars-lite"></div></div>
+          <div class="scene s2"></div><div class="scene s3"></div><div class="scene s2"></div><div class="scene s1"></div>
+        </>
+      )}
+    </div>
+
+    <div class="detail-grid">
+      <div>
+        <div class="kp" style="margin-top:0">🌌 Aurora forecast for your dates: <b>&nbsp;Kp 5–6, 3 clear nights</b></div>
+        <h2 style="font-size:24px;margin:28px 0 12px">About this home</h2>
+        <p style="color:var(--muted)">{home.description}</p>
+        <div class="amen-grid">
+          {home.amenities.map((a) => (<div>✓ {a}</div>))}
+        </div>
+        <div class="badge-row">
+          <div class="badge">✓ Verified reviews</div>
+          <div class="badge">✓ Free cancellation (30d)</div>
+          <div class="badge">✓ Best-price guarantee</div>
+          <div class="badge">✓ Local host, 24/7</div>
+        </div>
+      </div>
+      <div>
+        <div class="booking-box">
+          {home.price
+            ? <div class="pr">${home.price} <small style="font-size:14px;color:var(--muted);font-family:Inter">/ night</small></div>
+            : <div class="pr" style="font-size:22px">Best rate, direct</div>}
+          {home.rating && <div style="color:var(--warm);font-size:13.5px">★ {home.rating} · Superhost-level reviews</div>}
+          <div class="dates">
+            <div class="field"><label>Check-in</label><input type="date" /></div>
+            <div class="field"><label>Check-out</label><input type="date" /></div>
+          </div>
+          <div class="field" style="margin-bottom:16px"><label>Guests</label>
+            <select>{Array.from({length: Math.min(home.guests || 8, 12)}, (_,i)=> i+1).map((n)=>(<option>{n} guests</option>))}</select>
+          </div>
+          <div class="line" style="color:var(--aurora-green)"><span>Book direct</span><span>No OTA service fees</span></div>
+          <div class="line"><span>Free cancellation</span><span>up to 30 days out</span></div>
+          <a class="btn btn-primary" style="width:100%;margin-top:16px" href={bookUrl} target="_blank" rel="noopener">Check availability & book</a>
+          <p style="text-align:center;color:var(--muted);font-size:12.5px;margin-top:10px">Live pricing & dates on the next step</p>
+        </div>
+        <div style="margin-top:16px;text-align:center">
+          <div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">Prefer to compare? This home is also on:</div>
+          <div style="display:flex;gap:8px">
+            <a class="btn btn-ghost" style="flex:1;padding:10px" href={airbnbUrl} target="_blank" rel="noopener">Airbnb ↗</a>
+            <a class="btn btn-ghost" style="flex:1;padding:10px" href={vrboUrl} target="_blank" rel="noopener">VRBO ↗</a>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:8px">Same home — but OTA service fees make it cost more there.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div style="height:60px"></div>
+</Base>
