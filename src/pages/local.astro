@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import { RESTAURANTS, TOUR_GUIDES } from '../data/local.js';
+---
+<Base title="Fairbanks Local Guide — Best Restaurants, Food & Tours | Alaska Dream Vacation" description="Our local picks for eating and exploring in Fairbanks, Alaska: best restaurants, warm comfort food after aurora nights, and trusted tour operators.">
+  <section class="block wrap" style="padding-top:48px;padding-bottom:24px">
+    <span class="eyebrow">Local guide</span>
+    <h1 style="font-size:clamp(30px,5vw,52px);margin:16px 0 14px;max-width:24ch">Eat & explore like a local.</h1>
+    <p style="color:var(--muted);font-size:18px;max-width:62ch">The spots we send every guest to — warm food after a cold night, Fairbanks classics, and tours we trust. One-click directions or a reservation.</p>
+  </section>
+
+  <!-- FOOD -->
+  <section class="block wrap" style="padding-top:0">
+    <div class="sec-head"><span class="eyebrow">Where to eat</span><h2>Food & restaurants</h2><p>From special-occasion dining to a hot bowl of ramen at midnight.</p></div>
+    <div class="grid">
+      {RESTAURANTS.map((r) => (
+        <div class="card"><div class="body">
+          <div class="row"><h3>{r.name}</h3><span class="rate" style="color:var(--muted)">{r.price}</span></div>
+          <div class="loc">{r.cuisine}</div>
+          <p style="font-size:14px;color:var(--muted);margin-bottom:10px">{r.note}</p>
+          <div class="amen" style="margin-bottom:12px">{r.tags.map((t)=>(<span>{t}</span>))}</div>
+          <div class="meta" style="margin-top:0">
+            <a class="mini-btn" href={`https://www.google.com/maps/search/${encodeURIComponent(r.name + ' Fairbanks AK')}`} target="_blank" rel="noopener">📍 Directions</a>
+            <a class="from" href={`https://www.google.com/search?q=${encodeURIComponent(r.name + ' Fairbanks reservation')}`} target="_blank" rel="noopener" style="color:var(--aurora-green)">Reserve →</a>
+          </div>
+        </div></div>
+      ))}
+    </div>
+  </section>
+
+  <!-- TOURS -->
+  <section class="block wrap" style="padding-top:0">
+    <div class="sec-head"><span class="eyebrow">Get out there</span><h2>Tours & guides we trust</h2><p>Prefer to have it handled? We'll book any of these onto your stay.</p></div>
+    <div class="props">
+      {TOUR_GUIDES.map((t) => (
+        <div class="prop">
+          <h3>{t.name}</h3>
+          <p style="margin:8px 0 12px">{t.note}</p>
+          <div class="amen">{t.tags.map((x)=>(<span>{x}</span>))}</div>
+          <div style="margin-top:14px"><a class="mini-btn" href="/experiences">See experiences →</a></div>
+        </div>
+      ))}
+    </div>
+
+    <div class="cta-band" style="margin-top:48px"><div class="bg"></div>
+      <h2>Make it an easy trip</h2>
+      <p>Book a home and we'll help you plan the food, tours, and aurora around your dates.</p>
+      <a class="btn btn-primary" href="/#homes">Browse homes</a>
+    </div>
+  </section>
+</Base>
