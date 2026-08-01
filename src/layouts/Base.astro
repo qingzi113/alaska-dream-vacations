@@ -1,0 +1,86 @@
+---
+import '../styles/global.css';
+const {
+  title = 'Northern Lights Homes in Fairbanks & North Pole, Alaska | Alaska Dream Vacation',
+  description = 'Book spacious, high-end aurora homes in Fairbanks & North Pole, Alaska. Direct booking, best-price guarantee, verified reviews. Wake up to the northern lights.',
+  image = '/og-default.png',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={image} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'LodgingBusiness',
+    name: 'Alaska Dream Vacation',
+    description,
+    areaServed: 'Fairbanks, Alaska',
+    url: Astro.site?.href,
+  })} />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="/"><span class="mark"></span> Alaska Dream Vacation</a>
+      <nav class="nav-links">
+        <a href="/#homes">Homes</a>
+        <a href="/experiences">Experiences</a>
+        <a href="/guide">Aurora Guide</a>
+        <a href="/local">Local Guide</a>
+        <a href="/weddings">Weddings</a>
+        <a href="/about">About</a>
+      </nav>
+      <a class="btn btn-primary" href="/#homes">Check Availability</a>
+    </div>
+  </header>
+
+  <slot />
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="brand" href="/" style="margin-bottom:14px"><span class="mark"></span> Alaska Dream Vacation</a>
+          <p style="color:var(--muted);font-size:14px;max-width:34ch;margin-top:12px">Spacious, high-end aurora homes near Fairbanks, Alaska. Locally hosted, directly booked.</p>
+        </div>
+        <div><h4>Explore</h4>
+          <a href="/#homes">All homes</a>
+          <a href="/experiences">Experiences</a>
+          <a href="/local">Local guide</a>
+          <a href="/weddings">Weddings at Lundemo</a>
+        </div>
+        <div><h4>Aurora</h4>
+          <a href="/guide">Northern lights guide</a>
+          <a href="/guide#indicators">How to read the forecast</a>
+          <a href="/guide">Best time to visit</a>
+          <a href="/guide">Winter packing list</a>
+        </div>
+        <div><h4>Company</h4>
+          <a href="/about">About us</a>
+          <a href="/about">Contact</a>
+          <a href="/about">Cancellation policy</a>
+          <a href="/about">List with us</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Alaska Dream Vacation · Fairbanks, AK</span>
+        <span>Privacy · Terms · Powered by direct booking</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
