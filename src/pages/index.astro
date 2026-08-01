@@ -1,0 +1,154 @@
+---
+import Base from '../layouts/Base.astro';
+import { getListings } from '../lib/hostaway.js';
+import { EXPERIENCES } from '../data/experiences.js';
+const listings = await getListings();
+const featured = listings.slice(0, 6);
+const topExp = EXPERIENCES.slice(0, 4);
+---
+<Base>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="aurora-bg">
+      <div class="sky"></div><div class="stars"></div>
+      <div class="band b1"></div><div class="band b2"></div><div class="band b3"></div>
+    </div>
+    <div class="ridge">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,120 L0,70 L120,55 L260,80 L400,40 L560,75 L720,30 L880,70 L1040,45 L1200,80 L1320,55 L1440,75 L1440,120 Z" fill="#070b1f"/></svg>
+    </div>
+    <div class="wrap hero-inner">
+      <span class="eyebrow">◈ Luxury aurora homes · Fairbanks & North Pole, Alaska</span>
+      <h1>Fall asleep under the <span class="grad">northern lights.</span></h1>
+      <p class="lead">Spacious, high-end homes across Fairbanks & North Pole — minutes from downtown and the airport, with panoramic aurora views, premium amenities, and every detail taken care of.</p>
+      <form class="search" action="/#homes">
+        <div class="field"><label>Where</label><input value="Fairbanks, AK" name="where" /></div>
+        <div class="field"><label>Check-in</label><input type="date" name="checkin" /></div>
+        <div class="field"><label>Check-out</label><input type="date" name="checkout" /></div>
+        <div class="field"><label>Guests</label>
+          <select name="guests"><option>2 guests</option><option>4 guests</option><option>6 guests</option><option>8+ guests</option></select>
+        </div>
+        <button class="btn btn-primary" type="submit">Search</button>
+      </form>
+      <div class="kp"><span class="dot"></span> Tonight's aurora forecast: <b>&nbsp;Kp 5 — High activity</b> · clear skies over Fairbanks</div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <div class="trust"><div class="wrap trust-inner">
+    <div class="item"><b>4.9★</b><span>Average guest rating across our homes</span></div>
+    <div class="item"><b>{listings.length}</b><span>Aurora-view luxury homes</span></div>
+    <div class="item"><b>Save 15%</b><span>Booking direct vs. Airbnb / VRBO</span></div>
+    <div class="item"><b>2</b><span>Locations: Fairbanks & North Pole</span></div>
+    <div class="item"><b>Local</b><span>Alaska-based host team, 24/7</span></div>
+  </div></div>
+
+  <!-- WHY DIRECT -->
+  <section class="block wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Why book direct</span>
+      <h2>The same home — a better deal.</h2>
+      <p>Everything you'd get on an OTA, without the fees, plus perks only we can offer.</p>
+    </div>
+    <div class="props">
+      <div class="prop"><div class="ic">💸</div><h3>No service fees</h3><p>Skip Airbnb's 12–15% guest fee. What you see is what you pay.</p></div>
+      <div class="prop"><div class="ic">🌌</div><h3>Aurora wake-up call</h3><p>Free opt-in alerts when the lights break over your home at night.</p></div>
+      <div class="prop"><div class="ic">🔑</div><h3>Best-price guarantee</h3><p>Find it cheaper elsewhere and we'll match it, every time.</p></div>
+      <div class="prop"><div class="ic">🤝</div><h3>Talk to a local</h3><p>Real Fairbanks host team — not a call center — before & during your stay.</p></div>
+    </div>
+  </section>
+
+  <!-- HOMES -->
+  <section class="block wrap" id="homes" style="padding-top:0">
+    <div class="sec-head">
+      <span class="eyebrow">Featured homes</span>
+      <h2>Where you'll watch the sky.</h2>
+      <p>Spacious homes with high-end amenities and unobstructed north-facing aurora views — minutes from town.</p>
+    </div>
+    <div class="grid">
+      {featured.map((c) => (
+        <a class="card" href={`/homes/${c.slug}`}>
+          <div class={`ph scene ${c.scene}`} style={c.photos && c.photos[0] ? `--scene-photo:1;background-image:url(${c.photos[0]})` : ''}>
+            {c.tag && <span class="tag">{c.tag}</span>}<span class="fav">♡</span>
+          </div>
+          <div class="body">
+            <div class="row"><h3>{c.name}</h3>{c.rating && <span class="rate">{c.rating} ★</span>}</div>
+            <div class="loc">{c.neighborhood} · Sleeps {c.guests} · {c.bedrooms} BR</div>
+            <div class="amen">{c.amenities.slice(0,3).map((a)=>(<span>{a}</span>))}</div>
+            <div class="price">{c.price ? <>${c.price} <small>/ night</small></> : <span style="font-size:15px;color:var(--aurora-green)">View & book direct →</span>}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="block wrap">
+    <div class="split">
+      <div class="media scene s1"><div class="stars-lite"></div><div class="glow"></div></div>
+      <div>
+        <span class="eyebrow">The aurora experience</span>
+        <h2 style="font-size:clamp(26px,3.5vw,38px);margin:16px 0 12px">We do the chasing for you.</h2>
+        <p style="color:var(--muted);font-size:16px">Fairbanks sits directly under the auroral oval — one of the best places on Earth to see the lights. We make sure you don't miss them.</p>
+        <ul>
+          <li><span class="chk">✓</span> Real-time aurora & cloud forecast in your booking dashboard</li>
+          <li><span class="chk">✓</span> Optional midnight wake-up texts when Kp spikes</li>
+          <li><span class="chk">✓</span> Curated add-ons: dog sledding, hot springs, photo tours</li>
+          <li><span class="chk">✓</span> Heated homes, plug-in parking, and gear for −40° nights</li>
+        </ul>
+        <div style="margin-top:26px"><a class="btn btn-primary" href="/#homes">Plan my aurora trip</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCES TEASER -->
+  <section class="block wrap" style="padding-top:0">
+    <div class="sec-head">
+      <span class="eyebrow">Things to do</span>
+      <h2>Fill your days between the lights.</h2>
+      <p>Dog sledding, hot springs, photo tours and more — we book them straight to your stay.</p>
+    </div>
+    <div class="props">
+      {topExp.map((e) => (
+        <a class="prop" href="/experiences" style="text-decoration:none">
+          <div class="ic">{e.icon}</div>
+          <h3>{e.name}</h3>
+          <p>{e.blurb}</p>
+          <div class="from" style="margin-top:12px">from <b>${e.from}</b> {e.unit}</div>
+        </a>
+      ))}
+    </div>
+    <div style="text-align:center;margin-top:32px"><a class="btn btn-ghost" href="/experiences">See all experiences →</a></div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="block wrap" style="padding-top:0">
+    <div class="sec-head"><span class="eyebrow">Verified guest reviews</span><h2>Real nights, real lights.</h2></div>
+    <div class="reviews">
+      <div class="review"><div class="stars">★★★★★</div><p>"Got the wake-up text at 1am and stepped onto the deck to the strongest aurora of our lives. The whole trip was seamless."</p><div class="who"><div class="av"></div><div><b>Mia & Jonas</b><span>Berlin · Feb 2026</span></div></div></div>
+      <div class="review"><div class="stars">★★★★★</div><p>"Five minutes from the airport but felt like the wilderness. Booked direct and saved almost $200 over Airbnb."</p><div class="who"><div class="av"></div><div><b>Priya S.</b><span>Seattle · Mar 2026</span></div></div></div>
+      <div class="review"><div class="stars">★★★★★</div><p>"The host texted us cloud forecasts every day. That local knowledge is why we saw the lights 3 of 4 nights."</p><div class="who"><div class="av"></div><div><b>The Tanaka family</b><span>Osaka · Jan 2026</span></div></div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="wrap" style="padding:20px 24px 80px">
+    <div class="cta-band"><div class="bg"></div>
+      <h2>Your front-row seat to the northern lights.</h2>
+      <p>Check live availability across all our homes and lock in the direct-booking price — no service fees, free cancellation up to 30 days out.</p>
+      <a class="btn btn-primary" href="/#homes">Check availability</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block wrap" id="faq" style="padding-top:0">
+    <div class="sec-head" style="margin:0 auto 40px;text-align:center">
+      <span class="eyebrow">Good to know</span><h2>Aurora trip questions, answered.</h2>
+    </div>
+    <div class="faq">
+      <details class="q" open><summary>When is the best time to see the northern lights in Fairbanks?<span>+</span></summary><div class="a">Late August through mid-April, on clear nights between 10pm and 3am. Peak season is December–March. Our booking dashboard shows the live aurora forecast for your dates.</div></details>
+      <details class="q"><summary>How close are the homes to the airport and downtown?<span>+</span></summary><div class="a">All of our homes are within about 5–15 minutes of Fairbanks International Airport and downtown, while still being dark enough for excellent aurora viewing.</div></details>
+      <details class="q"><summary>Do I really save money booking direct?<span>+</span></summary><div class="a">Yes — you skip the 12–15% guest service fee OTAs charge, and we back it with a best-price guarantee. Same home, lower total.</div></details>
+      <details class="q"><summary>What if it's cloudy during my stay?<span>+</span></summary><div class="a">We can't control the sky, but we help you beat it: daily cloud forecasts, flexible aurora wake-up alerts, and tips on where to drive for clearer skies.</div></details>
+    </div>
+  </section>
+</Base>
