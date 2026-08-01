@@ -3,8 +3,11 @@
 // Phase 2: set HOSTAWAY_ACCOUNT_ID + HOSTAWAY_API_TOKEN in your environment (.env / Vercel)
 // and this pulls live listings, photos, pricing, and availability.
 
-const ACCOUNT_ID = import.meta.env.HOSTAWAY_ACCOUNT_ID;
-const API_TOKEN = import.meta.env.HOSTAWAY_API_TOKEN;
+// Read from Astro/Vite (import.meta.env) with a Node process.env fallback so the
+// credentials are picked up at build time on Vercel regardless of Astro version.
+const _env = (typeof process !== 'undefined' && process.env) ? process.env : {};
+const ACCOUNT_ID = import.meta.env.HOSTAWAY_ACCOUNT_ID || _env.HOSTAWAY_ACCOUNT_ID;
+const API_TOKEN = import.meta.env.HOSTAWAY_API_TOKEN || _env.HOSTAWAY_API_TOKEN;
 const BASE = 'https://api.hostaway.com/v1';
 
 export function hasLiveCredentials() {
