@@ -71,6 +71,9 @@ async function fetchLive(path) {
 }
 
 export async function getListings() {
+  const _keys = Object.keys(_env).filter((k) => k.startsWith('HOSTAWAY'));
+  console.log('[hostaway] creds check → account:', ACCOUNT_ID ? 'present' : 'MISSING',
+    '| token:', API_TOKEN ? 'present' : 'MISSING', '| process.env HOSTAWAY keys:', _keys.join(',') || 'none');
   if (hasLiveCredentials()) {
     try {
       const result = await fetchLive('/listings?limit=100');
