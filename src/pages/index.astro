@@ -3,8 +3,8 @@ import Base from '../layouts/Base.astro';
 import { getListings } from '../lib/hostaway.js';
 import { EXPERIENCES } from '../data/experiences.js';
 const listings = await getListings();
-const featured = listings.slice(0, 6);
 const topExp = EXPERIENCES.slice(0, 4);
+const BOOK = 'https://alaskadreamvacation.holidayfuture.com/';
 ---
 <Base>
   <!-- HERO -->
@@ -27,7 +27,7 @@ const topExp = EXPERIENCES.slice(0, 4);
         <div class="field"><label>Guests</label>
           <select name="guests"><option>2 guests</option><option>4 guests</option><option>6 guests</option><option>8+ guests</option></select>
         </div>
-        <button class="btn btn-primary" type="submit">Search</button>
+        <button class="btn btn-primary" type="submit">Search homes</button>
       </form>
       <div class="kp"><span class="dot"></span> Tonight's aurora forecast: <b>&nbsp;Kp 5 — High activity</b> · clear skies over Fairbanks</div>
     </div>
@@ -57,27 +57,19 @@ const topExp = EXPERIENCES.slice(0, 4);
     </div>
   </section>
 
-  <!-- HOMES -->
+  <!-- HOMES — LIVE HOSTAWAY BOOKING ENGINE -->
   <section class="block wrap" id="homes" style="padding-top:0">
     <div class="sec-head">
-      <span class="eyebrow">Featured homes</span>
+      <span class="eyebrow">Book direct · Live availability</span>
       <h2>Where you'll watch the sky.</h2>
-      <p>Spacious homes with high-end amenities and unobstructed north-facing aurora views — minutes from town.</p>
+      <p>Browse every home with live photos, nightly rates and real-time availability — reserve instantly, with no OTA service fees.</p>
     </div>
-    <div class="grid">
-      {featured.map((c) => (
-        <a class="card" href={`/homes/${c.slug}`}>
-          <div class={`ph scene ${c.scene}`} style={c.photos && c.photos[0] ? `--scene-photo:1;background-image:url(${c.photos[0]})` : ''}>
-            {c.tag && <span class="tag">{c.tag}</span>}<span class="fav">♡</span>
-          </div>
-          <div class="body">
-            <div class="row"><h3>{c.name}</h3>{c.rating && <span class="rate">{c.rating} ★</span>}</div>
-            <div class="loc">{c.neighborhood} · Sleeps {c.guests} · {c.bedrooms} BR</div>
-            <div class="amen">{c.amenities.slice(0,3).map((a)=>(<span>{a}</span>))}</div>
-            <div class="price">{c.price ? <>${c.price} <small>/ night</small></> : <span style="font-size:15px;color:var(--aurora-green)">View & book direct →</span>}</div>
-          </div>
-        </a>
-      ))}
+    <div class="book-embed">
+      <iframe src={BOOK} title="Book an Alaska Dream Vacation aurora home — live availability" loading="lazy" allow="payment"></iframe>
+    </div>
+    <div class="book-fallback">
+      Trouble loading the live booking view?
+      <a href={BOOK} target="_blank" rel="noopener">Open the full booking site →</a>
     </div>
   </section>
 
@@ -151,4 +143,12 @@ const topExp = EXPERIENCES.slice(0, 4);
       <details class="q"><summary>What if it's cloudy during my stay?<span>+</span></summary><div class="a">We can't control the sky, but we help you beat it: daily cloud forecasts, flexible aurora wake-up alerts, and tips on where to drive for clearer skies.</div></details>
     </div>
   </section>
+
+  <style>
+    .book-embed{border-radius:18px;overflow:hidden;border:1px solid rgba(120,200,180,0.16);box-shadow:0 24px 70px rgba(0,0,0,0.45);background:#0b1020}
+    .book-embed iframe{width:100%;height:1000px;border:0;display:block;background:#0b1020}
+    @media (max-width:640px){.book-embed iframe{height:1200px}}
+    .book-fallback{text-align:center;margin-top:16px;color:var(--muted);font-size:13.5px}
+    .book-fallback a{color:var(--aurora-green);text-decoration:none;margin-left:6px}
+  </style>
 </Base>
