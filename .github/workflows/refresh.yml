@@ -1,0 +1,25 @@
+name: Auto-refresh site (every 2 hours)
+
+# Rebuilds the Vercel site on a schedule so any build-time Hostaway data
+# (listing cards / detail pages, once HOSTAWAY_API_TOKEN is set) stays fresh.
+# The live booking-engine embed on the homepage already updates in real time,
+# so calendars/availability are always current regardless of this job.
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'   # every 2 hours (UTC). Twice-daily alt: '0 6,18 * * *'
+  workflow_dispatch:          # lets you trigger a refresh manually from the Actions tab
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Vercel deploy hook
+        run: |
+          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK }}" ]; then
+            echo "Secret VERCEL_DEPLOY_HOOK is not set — add it in repo Settings > Secrets and variables > Actions. Skipping."
+            exit 0
+          fi
+          echo "Triggering Vercel rebuild..."
+          curl -sS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
+          echo "Done."
